@@ -7,7 +7,37 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <AppBar IsOpen="True" IsSticky="True">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Icon="Page" Label="New" Click="New_Click"/>
+                <AppBarButton Icon="Save" Label="Save" Click="Save_Click"/>
+                <AppBarButton Icon="Delete" Label="Delete" Click="Delete_Click"/>
+                <AppBarButton Icon="Help" Label="Help" Click="Help_Click"/>
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
 
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <SplitView x:Name="Splitter" IsPaneOpen="True" Grid.Column="1" DisplayMode="Inline" Grid.Row="1">
+            <SplitView.Pane>
+                <RelativePanel Margin="0,0,0,20" Background="#FFCFC7C7" HorizontalAlignment="Left">
+                    <!--<DatePicker x:Name="timeUI" RelativePanel.AlignTopWithPanel="True" FontSize="20" Header="Date" RelativePanel.AlignLeftWithPanel="True" IsEnabled="False"/>-->
+                    <!--<TimePicker x:Name="timePick" Header="Clock" RelativePanel.Below="timeUI" Margin="0,5,0,0" RelativePanel.AlignLeftWithPanel="True" IsEnabled="False"/>-->
+                    <TextBlock x:Name="SlideBarTitle" Text="History" RelativePanel.AlignTopWithPanel="True" TextWrapping="Wrap" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="20,10,0,0"  FontSize="30" FontWeight="Bold"/>
+                    <ListBox x:Name="DiaryList"
+                 SelectionMode="Single" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" RelativePanel.Below="SlideBarTitle" Margin="0,20,0,0" IsEnabled="True">
+                    </ListBox>
+                </RelativePanel>
+            </SplitView.Pane>
+            <RelativePanel>
+                <TextBox x:Name="DiaryTitle"  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" FontSize="40" FontStyle="Italic" PlaceholderText="Title" TextChanged="DiaryTitle_TextChanged"/>
+                <TextBox x:Name="DiaryContent" TextWrapping="Wrap" AcceptsReturn="True" RelativePanel.Below="DiaryTitle" RelativePanel.AlignBottomWithPanel="True"  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" PlaceholderText="Type your dirays here" FontSize="22" ScrollViewer.VerticalScrollBarVisibility="Auto" TextChanged="DiaryContent_TextChanged"/>
+            </RelativePanel>
+        </SplitView>
     </Grid>
 </Page>
