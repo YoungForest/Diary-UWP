@@ -81,12 +81,20 @@ namespace Diary
         new Windows.UI.Popups.MessageDialog("This application is a lightweight diaries managing tool!\n\nNew to open a new diary page;\nSave to save the current diary;\nDelete to Delete the current diary;\nHelp to popup this.\n\nIf you find any bugs or want to have any improvements, email to yangsen758@foxmail.com.");
             await messageDialog.ShowAsync();
         }
-        private async void botton_click(object sender, RoutedEventArgs e)
+        private void botton_click(object sender, RoutedEventArgs e)
+        {
+            if ((!DiaryTitle.Text.Equals(string.Empty) || !DiaryContent.Text.Equals(string.Empty)) && flag == true)  // 如果当前日记不为空且已经被修改,进行询问
+                ShowMessageDialog_2(sender, e);
+            else
+            {   // 直接打开对应日记
+                openAnotherDiary(sender, e);
+            }
+        }
+        //  打开 被点击按钮所对应的日记
+        private async void openAnotherDiary(object sender, RoutedEventArgs e)
         {
             Button b = (Button)sender;
             string s = b.Name.ToString();
-            if (!DiaryTitle.Text.Equals(string.Empty))
-                Save_Click(null, null);
             DiaryTitle.Text = s;
             DiaryContent.Text = ApplicationData.Current.LocalSettings.Values[s].ToString();
             await System.Threading.Tasks.Task.Delay(20);
@@ -158,6 +166,15 @@ namespace Diary
        new Windows.UI.Popups.MessageDialog("Current diary which was changed has not been saved yet.\nDo you want to save it?");
             messageDialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", uiCommand => { Save_Click(null, null); flag = false; New_Click(null, null);}));
             messageDialog.Commands.Add(new Windows.UI.Popups.UICommand("No", uiCommand => { flag = false; New_Click(null, null); }));
+            await messageDialog.ShowAsync();
+        }
+
+        private async void ShowMessageDialog_2(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Popups.MessageDialog messageDialog =
+       new Windows.UI.Popups.MessageDialog("Current diary which was changed has not been saved yet.\nDo you want to save it?");
+            messageDialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", uiCommand => { Save_Click(null, null); flag = false; openAnotherDiary(sender, e); }));
+            messageDialog.Commands.Add(new Windows.UI.Popups.UICommand("No", uiCommand => { flag = false; openAnotherDiary(sender, e); }));
             await messageDialog.ShowAsync();
         }
         //async public void OnSuspending(object sender)
